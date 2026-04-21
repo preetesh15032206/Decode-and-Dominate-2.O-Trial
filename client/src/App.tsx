@@ -17,17 +17,31 @@ import Background from "@/components/Background";
 function Router() {
   const [location] = useLocation();
   const auth = typeof window !== 'undefined' ? localStorage.getItem("auth_user") : null;
-  const isAuthenticated = !!auth;
+  const authData = auth ? JSON.parse(auth) : null;
+  const isAuthenticated = !!authData;
+  const isAdmin = authData?.role === "admin";
+  const isParticipant = authData?.role === "student";
 
+  // Redirect to login if not authenticated
   if (!isAuthenticated && location !== "/login") {
     if (typeof window !== 'undefined') window.location.href = "/login";
     return null;
   }
 
+  // Redirect to home if already logged in and trying to access login
   if (isAuthenticated && location === "/login") {
     if (typeof window !== 'undefined') window.location.href = "/";
     return null;
   }
+
+  // Restrict Admin route to only Admin role
+  if (location === "/admin" && !isAdmin) {
+    if (typeof window !== 'undefined') window.location.href = "/";
+    return null;
+  }
+
+  // Restrict participant routes if user is Admin (optional, but admins might want to see the UI. If not, restrict)
+  // if (isAdmin && location !== "/admin" && location !== "/") { ... }
 
   return (
     <div className="flex h-screen overflow-hidden bg-transparent text-white selection:bg-primary/30 font-sans">

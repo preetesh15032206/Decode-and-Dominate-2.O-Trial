@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils";
 export default function Dashboard() {
   const [location] = useLocation();
 
+  const auth = typeof window !== 'undefined' ? localStorage.getItem("auth_user") : null;
+  const authData = auth ? JSON.parse(auth) : null;
+
   const navItems = [
     { icon: LayoutDashboard, label: "Overview", href: "/" },
     { icon: Users, label: "Team Info", href: "/about" },
@@ -70,22 +73,24 @@ export default function Dashboard() {
           );
         })}
         
-        {/* Admin Link (Hidden/Separate) */}
-        <div className="pt-4 mt-4 border-t border-white/5">
-             <Link href="/admin">
-              <div
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg border transition-all cursor-pointer group relative overflow-hidden",
-                  location === "/admin"
-                    ? "bg-red-500/10 border-red-500/50 text-white shadow-[0_0_15px_rgba(239,68,68,0.2)]"
-                    : "bg-transparent border-transparent text-gray-500 hover:bg-red-500/5 hover:text-red-400 hover:border-red-500/10"
-                )}
-              >
-                <Lock className="w-5 h-5" />
-                <span className="font-medium tracking-wide font-display text-sm">Admin Control</span>
-              </div>
-            </Link>
-        </div>
+        {/* Admin Link (Hidden/Separate) - Only show for Admin */}
+        {authData?.role === "admin" && (
+          <div className="pt-4 mt-4 border-t border-white/5">
+               <Link href="/admin">
+                <div
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-lg border transition-all cursor-pointer group relative overflow-hidden",
+                    location === "/admin"
+                      ? "bg-red-500/10 border-red-500/50 text-white shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+                      : "bg-transparent border-transparent text-gray-500 hover:bg-red-500/5 hover:text-red-400 hover:border-red-500/10"
+                  )}
+                >
+                  <Lock className="w-5 h-5" />
+                  <span className="font-medium tracking-wide font-display text-sm">Admin Control</span>
+                </div>
+              </Link>
+          </div>
+        )}
       </nav>
 
       {/* Stats/Footer */}
