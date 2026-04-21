@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export default function Dashboard() {
   const [location] = useLocation();
 
-  const auth = typeof window !== 'undefined' ? localStorage.getItem("auth_user") : null;
+  const auth = typeof window !== 'undefined' ? sessionStorage.getItem("auth_user") : null;
   const authData = auth ? JSON.parse(auth) : null;
 
   const navItems = [
@@ -27,7 +27,7 @@ export default function Dashboard() {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem("auth_user");
+    sessionStorage.removeItem("auth_user");
     window.location.href = "/login";
   };
 

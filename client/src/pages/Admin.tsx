@@ -33,7 +33,7 @@ export default function Admin() {
 
   useEffect(() => {
     // Check auth
-    const auth = localStorage.getItem("auth_user");
+    const auth = sessionStorage.getItem("auth_user");
     if (!auth || JSON.parse(auth).role !== "admin") {
       window.location.href = "/";
     }

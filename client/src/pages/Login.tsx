@@ -18,7 +18,7 @@ export default function Login() {
     const team = teams.find(t => t.id === teamId && t.password === teamPassword);
     
     if (team) {
-      localStorage.setItem("auth_user", JSON.stringify({ role: "student", teamId }));
+      sessionStorage.setItem("auth_user", JSON.stringify({ role: "student", teamId }));
       toast({
         title: "Access Granted",
         description: `Welcome, Team ${teamId}`,
@@ -36,7 +36,7 @@ export default function Login() {
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (adminPassword === "Preetesh@15") {
-      localStorage.setItem("auth_user", JSON.stringify({ role: "admin" }));
+      sessionStorage.setItem("auth_user", JSON.stringify({ role: "admin" }));
       toast({
         title: "Admin Access Granted",
         description: "Welcome to the Control Panel.",
