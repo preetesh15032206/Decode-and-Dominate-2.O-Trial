@@ -1,3 +1,19 @@
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Cloning github.com/preetesh15032206/finalllliieieiiei (Branch: main, Commit: e3c4aa4)
+Previous build caches not available.
+Cloning completed: 715.000ms
+Found .vercelignore
+Removed 460 ignored files defined in .vercelignore
+  /.git/config
+  /.git/description
+  /.git/FETCH_HEAD
+  /.git/HEAD
+  /.git/hooks/applypatch-msg.sample
+  /.git/hooks/commit-msg.sample
+  /.git/hooks/fsmonitor-watchman.sample
+  /.git/hooks/post-update.sample
+  /.git/hooks/pre-applypatch.sample
 # Vercel Deployment Guide
 
 ## Prerequisites

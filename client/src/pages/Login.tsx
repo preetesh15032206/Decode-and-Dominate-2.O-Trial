@@ -21,7 +21,7 @@ export default function Login() {
       sessionStorage.setItem("auth_user", JSON.stringify({ role: "student", teamId }));
       toast({
         title: "Access Granted",
-        description: `Welcome, Team ${teamId}`,
+        description: "Welcome, Team " + teamId,
       });
       window.location.href = "/";
     } else {
