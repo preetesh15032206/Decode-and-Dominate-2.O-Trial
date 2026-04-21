@@ -23,6 +23,11 @@ export default function Dashboard() {
     { icon: Code, label: "Round 3: Clone", href: "/round3" },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("auth_user");
+    window.location.href = "/login";
+  };
+
   return (
     <aside className="w-1/4 h-screen border-r border-[rgba(0,240,255,0.1)] p-6 flex flex-col relative z-20 backdrop-blur-md bg-[rgba(5,5,16,0.7)] shadow-[5px_0_30px_rgba(0,0,0,0.5)]">
       {/* Header */}
@@ -96,7 +101,7 @@ export default function Dashboard() {
           </div>
         </div>
         
-        <button className="w-full flex items-center justify-center gap-2 text-gray-500 hover:text-destructive transition-colors text-sm py-2 font-mono uppercase tracking-widest hover:bg-[rgba(255,0,0,0.05)] rounded">
+        <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 text-gray-500 hover:text-destructive transition-colors text-sm py-2 font-mono uppercase tracking-widest hover:bg-[rgba(255,0,0,0.05)] rounded">
           <LogOut className="w-4 h-4" />
           <span>DISCONNECT</span>
         </button>
