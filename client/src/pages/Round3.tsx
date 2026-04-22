@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ChevronLeft, Lock, LogIn } from "lucide-react";
@@ -22,6 +22,21 @@ export default function Round3() {
   const [password, setPassword] = useState("");
   const { toast } = useToast();
 
+  useEffect(() => {
+    return () => {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => undefined);
+      }
+    };
+  }, []);
+
+  const enterFullscreen = async () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) {
+      await element.requestFullscreen().catch(() => undefined);
+    }
+  };
+
   useAntiCheat();
 
   const authMutation = useMutation({
@@ -35,9 +50,10 @@ export default function Round3() {
       }
       return true;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       setIsAuthenticated(true);
       toast({ title: "Authorized", description: "Identity verified. Round 3 unlocked." });
+      await enterFullscreen();
     },
     onError: () => {
       toast({ 

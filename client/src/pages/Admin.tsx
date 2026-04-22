@@ -11,12 +11,44 @@ import {
   getSnippetsR2, setSnippetsR2 as saveSnippetsR2, SnippetR2
 } from "@/lib/store";
 
+const LOG_STORAGE_KEY = "proctoring_logs";
+
+type ViolationLog = {
+  id: string;
+  teamId: string;
+  type: string;
+  timestamp: string;
+};
+
+function loadViolationLogs(): ViolationLog[] {
+  if (typeof window === "undefined") return [];
+  const raw = localStorage.getItem(LOG_STORAGE_KEY);
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw) as ViolationLog[];
+  } catch {
+    return [];
+  }
+}
+
+function formatViolationText(log: ViolationLog) {
+  const actionLabels: Record<string, string> = {
+    tab_switch: "Tab Switch Detected",
+    paste_attempt: "Paste Attempt Blocked",
+    copy_cut_attempt: "Copy/Cut Attempt Blocked",
+    right_click: "Right Click Blocked",
+    screenshot_attempt: "Screenshot Attempt Detected",
+  };
+  return `[${new Date(log.timestamp).toLocaleTimeString()}] ALERT: Team ${log.teamId} — ${actionLabels[log.type] || log.type}`;
+}
+
 export default function Admin() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<"proctor" | "teams" | "r1" | "r2">("proctor");
 
   // Proctoring
   const [isProtectorEnabled, setIsProtectorEnabled] = useState(false);
+  const [violationLogs, setViolationLogs] = useState<ViolationLog[]>([]);
 
   // Teams
   const [teams, setTeams] = useState<Team[]>([]);
@@ -36,14 +68,24 @@ export default function Admin() {
     const auth = sessionStorage.getItem("auth_user");
     if (!auth || JSON.parse(auth).role !== "admin") {
       window.location.href = "/";
+      return;
     }
 
     const savedState = localStorage.getItem("protector_mode");
     setIsProtectorEnabled(savedState === "true");
+    setViolationLogs(loadViolationLogs());
+
+    const interval = window.setInterval(() => {
+      setViolationLogs(loadViolationLogs());
+    }, 3000);
 
     setTeams(getTeams());
     setQuestions(getQuestionsR1());
     setSnippets(getSnippetsR2());
+
+    return () => {
+      window.clearInterval(interval);
+    };
   }, []);
 
   const handleToggle = (checked: boolean) => {
@@ -172,12 +214,15 @@ export default function Admin() {
                <div className="text-gray-500 border-b border-gray-800 pb-2 mb-2">STREAM_ESTABLISHED_SECURE_CHANNEL...</div>
                <div className="text-green-400">[10:00:01] System initialized</div>
                <div className="text-gray-400">[10:05:23] Admin login detected (IP: 192.168.1.1)</div>
-               {isProtectorEnabled && (
-                  <>
-                      <div className="text-yellow-500">[10:15:42] WARN: Global Proctoring Enabled</div>
-                      <div className="text-red-400 animate-pulse">[10:16:05] ALERT: Participant_004 Tab Switch Violation</div>
-                      <div className="text-red-400">[10:18:12] ALERT: Participant_012 Copy Attempt Blocked</div>
-                  </>
+               {isProtectorEnabled && <div className="text-yellow-500">[10:15:42] WARN: Global Proctoring Enabled</div>}
+               {violationLogs.length > 0 ? (
+                 violationLogs.slice().reverse().map((log) => (
+                   <div key={log.id} className="text-red-400">
+                     {formatViolationText(log)}
+                   </div>
+                 ))
+               ) : (
+                 <div className="text-gray-500">No security incidents logged yet.</div>
                )}
                <div className="text-gray-500 animate-pulse">_</div>
              </div>
