@@ -50,6 +50,20 @@ The client is built in `client/` and includes:
 - **Question setter:** Admins can prepare, enable, and manage round questions through the admin interface.
 - **Round-wise evaluation:** Contest rounds are gated by unlock logic, with separate entry conditions, scoring rules, and progression checks for `Round1`, `Round2`, and `Round3`.
 
+## Admin Panel Preview (Admin Only)
+
+The following preview images show the admin control panel only. These views are not available to regular participants and are intended for authorized admin use only.
+
+![Admin Panel Preview - Proctoring](./docs/admin-panel-proctoring.png)
+
+![Admin Panel Preview - Manage Teams](./docs/admin-panel-manage-teams.png)
+
+![Admin Panel Preview - Round 1 Quiz](./docs/admin-panel-round1-quiz.png)
+
+![Admin Panel Preview - Round 2 Snippets](./docs/admin-panel-round2-snippets.png)
+
+> Note: The above screenshots are admin-only preview images for the platform management dashboard.
+
 ## Backend
 
 The server is built in `server/` and includes:
