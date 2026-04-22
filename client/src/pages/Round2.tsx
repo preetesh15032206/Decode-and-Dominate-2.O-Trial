@@ -1,16 +1,22 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { User } from "@shared/schema";
+import { useMutation } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { ShieldAlert, ChevronLeft, Lock, LogIn } from "lucide-react";
+import { ChevronLeft, Lock, LogIn } from "lucide-react";
 import { useAntiCheat } from "@/hooks/use-anti-cheat";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { getTeams } from "@/lib/store";
+
+interface AuthUser {
+  role: "student";
+  teamId: string;
+}
 
 export default function Round2() {
-  const { data: user, isLoading } = useQuery<User>({ queryKey: ["/api/me"] });
+  const authJson = typeof window !== "undefined" ? sessionStorage.getItem("auth_user") : null;
+  const authUser = authJson ? (JSON.parse(authJson) as AuthUser) : null;
+  const team = authUser ? getTeams().find((team) => team.id === authUser.teamId) : undefined;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const { toast } = useToast();
@@ -19,23 +25,17 @@ export default function Round2() {
 
   const authMutation = useMutation({
     mutationFn: async () => {
-      const res = await apiRequest("POST", "/api/login", { 
-        username: user?.username, 
-        password 
-      });
-      return res.json();
+      if (!authUser || authUser.role !== "student" || !team) {
+        throw new Error("Unauthorized");
+      }
+      if (team.password !== password) {
+        throw new Error("Invalid credentials");
+      }
+      return true;
     },
     onSuccess: () => {
-      if (user?.round2Access || user?.role === "admin") {
-        setIsAuthenticated(true);
-        toast({ title: "Authorized", description: "Identity verified. Round 2 unlocked." });
-      } else {
-        toast({ 
-          title: "Access Denied", 
-          description: "Admin has not approved access for this round.",
-          variant: "destructive"
-        });
-      }
+      setIsAuthenticated(true);
+      toast({ title: "Authorized", description: "Identity verified. Round 2 unlocked." });
     },
     onError: () => {
       toast({ 
@@ -46,7 +46,10 @@ export default function Round2() {
     }
   });
 
-  if (isLoading) return <div className="p-10 animate-pulse">SYNCING SYSTEM...</div>;
+  if (!authUser) {
+    if (typeof window !== "undefined") window.location.href = "/login";
+    return null;
+  }
 
   if (!isAuthenticated) {
     return (
