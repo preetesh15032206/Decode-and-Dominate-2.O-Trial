@@ -35,10 +35,20 @@ The client is built in `client/` and includes:
 ### Key UI Features
 
 - Role-based auth flow for participants and admins
-- Fullscreen entry and round unlock logic
-- Live admin security logs for proctoring events
+- Fullscreen entry and round unlock logic for each round
+- Live admin security logs for proctoring and anti-cheat events
+- Admin control panel with real-time violation tracking
+- Question setter and round management tools for admin users
+- Round-wise evaluation logic and progression gating
 - Modal and notification support
 - Responsive UI components built with custom design system primitives
+
+## Feature Highlights
+
+- **Admin control:** Admin users can manage contest progress from a dedicated dashboard, monitor security alerts, and review live event logs.
+- **Live security logs:** Every prohibited action is captured and displayed in real time for admins, including window/tab change detection and focus loss.
+- **Question setter:** Admins can prepare, enable, and manage round questions through the admin interface.
+- **Round-wise evaluation:** Contest rounds are gated by unlock logic, with separate entry conditions, scoring rules, and progression checks for `Round1`, `Round2`, and `Round3`.
 
 ## Backend
 
