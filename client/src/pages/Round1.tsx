@@ -11,6 +11,7 @@ import { getTeams } from "@/lib/store";
 interface AuthUser {
   role: "student";
   teamId: string;
+  teamPassword: string;
 }
 
 export default function Round1() {
@@ -25,10 +26,11 @@ export default function Round1() {
 
   const authMutation = useMutation({
     mutationFn: async () => {
-      if (!authUser || authUser.role !== "student" || !team) {
+      if (!authUser || authUser.role !== "student") {
         throw new Error("Unauthorized");
       }
-      if (team.password !== password) {
+      const unlockPassword = authUser.teamPassword ?? team?.password;
+      if (!unlockPassword || unlockPassword !== password) {
         throw new Error("Invalid credentials");
       }
       return true;

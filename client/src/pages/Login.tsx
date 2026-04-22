@@ -18,7 +18,10 @@ export default function Login() {
     const team = teams.find(t => t.id === teamId && t.password === teamPassword);
     
     if (team) {
-      sessionStorage.setItem("auth_user", JSON.stringify({ role: "student", teamId }));
+      sessionStorage.setItem(
+        "auth_user",
+        JSON.stringify({ role: "student", teamId, teamPassword })
+      );
       toast({
         title: "Access Granted",
         description: "Welcome, Team " + teamId,
