@@ -21,7 +21,7 @@ export default function Home() {
          <h1 
           className="text-6xl md:text-7xl font-black mb-4 text-white tracking-tight font-display" 
         >
-          DECODE AND DOMINATE <span className="text-primary">2.0</span>
+          DECODE AND DOMINATE <span className="text-primary">2.O</span> Trial
         </h1>
         <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light">
           {user ? `Welcome back, team ${user.teamName}` : "The ultimate coding battleground where logic meets creativity."}
@@ -45,7 +45,7 @@ export default function Home() {
           About the Event
         </h2>
         <p className="text-lg mb-6 text-gray-300 leading-relaxed font-light">
-          Decode & Dominate is KIITFEST's premier coding competition where programmers battle through three intense rounds of challenges.
+          Decode and Dominate 2.O Trial is KIITFEST's premier coding competition where programmers battle through three intense rounds of challenges.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
