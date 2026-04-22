@@ -54,13 +54,13 @@ The client is built in `client/` and includes:
 
 The following preview images show the admin control panel only. These views are not available to regular participants and are intended for authorized admin use only.
 
-![Admin Panel Preview - Proctoring](./docs/admin-panel-proctoring.png)
+![Admin Panel Preview - Proctoring](./Screenshot 2026-04-22 142654.png)
 
-![Admin Panel Preview - Manage Teams](./docs/admin-panel-manage-teams.png)
+![Admin Panel Preview - Manage Teams](./Screenshot 2026-04-22 142715.png)
 
-![Admin Panel Preview - Round 1 Quiz](./docs/admin-panel-round1-quiz.png)
+![Admin Panel Preview - Round 1 Quiz](./Screenshot 2026-04-22 142742.png)
 
-![Admin Panel Preview - Round 2 Snippets](./docs/admin-panel-round2-snippets.png)
+![Admin Panel Preview - Round 2 Snippets](./Screenshot 2026-04-22 142803.png)
 
 > Note: The above screenshots are admin-only preview images for the platform management dashboard.
 
